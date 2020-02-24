@@ -66,6 +66,7 @@ export class MapContainer extends Component {
     }
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.handleMapClick = this.handleMapClick.bind(this);
   }
 
 
@@ -92,21 +93,22 @@ export class MapContainer extends Component {
     this.setState({markers: tempMarkers});
   }
 
-  handleMarkerClick = (props, marker, e) =>
+  handleMarkerClick = (props, marker, e) => {
+    console.log("marker clicked");
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true
     });
+  }
 
-  onMapClicked(props){
-
-
+  handleMapClick = (props) =>{
+    console.log("map cliked");
 
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
-        activeMarker: null
+        activeMarker: {}
       })
     }
   }
@@ -122,6 +124,7 @@ export class MapContainer extends Component {
             lat: 56.95,
             lng: -4.5
           }}
+          onClick = {this.handleMapClick}
       >
 
         {this.state.markers}
