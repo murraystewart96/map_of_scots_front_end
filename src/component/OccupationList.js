@@ -15,7 +15,7 @@ const OccupationList = (props) => {
 
 
   const occupations = props.occupations.map((occupation, index) => {
-    return <li key={index} value={index} onClick={handleClick}>{occupation}</li>
+    return <li key={index} value={index} onClick={handleClick}>{occupation+"s"}</li>
   })
 
 

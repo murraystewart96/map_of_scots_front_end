@@ -140,13 +140,6 @@ export class MapContainer extends Component {
           lng: marker.position.lng()
         }
     });
-    // console.log(this.state.activeMarker.position);
-    // this.setState({
-    //   mapCenter: {
-    //     lat: this.state.activeMarker.position.lat,
-    //     lng: this.state.activeMarker.position.lng
-    //   }
-    // })
   }
 
   handleMapClick = (props) =>{

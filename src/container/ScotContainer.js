@@ -28,29 +28,41 @@ class ScotContainer extends Component{
     request.get('/api/scots/' + occupation)
     .then((data) => {
       this.setState({scots: data})
-
-      // const tempMarkers = this.state.scots.map((scot, index) => {
-      //   const spaceIndex = scot.coord.indexOf(" ");
-      //   const coord1 = scot.coord.slice(0, spaceIndex);
-      //   const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
-      //   console.log(scot.coord);
-      //   console.log(coord1);
-      //   console.log(coord2);
-      //   return <Marker name={scot['name']}
-      //   dateOfBirth={scot['dateOfBirth']}
-      //   position={{lat: coord2, lng: coord1}}
-      //   imageURL = {scot['imageURL']}
-      //   onClick={this.handleMarkerClick}
-      //   key={index}
-      //   />
-      // })
-      // this.setState({markers: tempMarkers})
     })
   }
 
 
 
+  handleGenderFilter(event){
+    let fileteredScots = [];
+    for(let i = 0; i < this.state.scots.length; i++){
+      if(this.state.scots[i].gender === event.target.value){
+        fileteredScots.push(this.state.scots[i])
+      }
+    }
 
+    this.setState({scots: fileteredScots})
+  }
+
+
+  handleDeadOrAlive(event){
+    let fileteredScots = [];
+
+    if(event.target.value === "dead"){
+      for(let i = 0; i < this.state.scots.length; i++){
+        if(this.state.scots[i].dateOfDeath !== ""){
+          fileteredScots.push(this.state.scots[i])
+        }
+      }
+    }else{
+      for(let i = 0; i < this.state.scots.length; i++){
+        if(this.state.scots[i].dateOfDeath === ""){
+          fileteredScots.push(this.state.scots[i])
+        }
+      }
+    }
+    this.setState({scots: fileteredScots})
+  }
 
 
 
