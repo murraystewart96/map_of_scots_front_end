@@ -1,5 +1,5 @@
 
-import React, {Component} from 'react'
+import React, {Component, useEffect} from 'react'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 
 
@@ -67,6 +67,8 @@ export class MapContainer extends Component {
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
+
   }
 
 
@@ -90,8 +92,41 @@ export class MapContainer extends Component {
      />
     })
 
+
     this.setState({markers: tempMarkers});
+
   }
+
+
+  componentDidUpdate(prevProps){
+    if (this.props !== prevProps) {
+      const tempMarkers = this.props.scots.map((scot, index) => {
+        const spaceIndex = scot.coord.indexOf(" ");
+        const coord1 = scot.coord.slice(0, spaceIndex);
+        const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
+        console.log(scot.coord);
+        console.log(coord1);
+        console.log(coord2);
+        return <Marker name={scot['name']}
+        dateOfBirth={scot['dateOfBirth']}
+        position={{lat: coord2, lng: coord1}}
+        imageURL = {scot['imageURL']}
+        onClick={this.handleMarkerClick}
+        key={index}
+       />
+      })
+      this.setState({markers: tempMarkers});
+      console.log("yaaaaaass");
+    }
+  }
+
+
+
+
+
+
+
+
 
   handleMarkerClick = (props, marker, e) => {
     console.log("marker clicked");
@@ -114,10 +149,7 @@ export class MapContainer extends Component {
   }
 
   render() {
-    if(this.props.scots.length === 0){
-      return <p>LOADING...</p>
-    }
-
+  
     return (
       <Map google={this.props.google} zoom={7}
       initialCenter={{
