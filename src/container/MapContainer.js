@@ -77,14 +77,13 @@ export class MapContainer extends Component {
   componentDidMount(){
     console.log(this.props.scots);
     const tempMarkers = this.props.scots.map((scot, index) => {
+      const dob = scot.dateOfBirth.slice(0,10);
       const spaceIndex = scot.coord.indexOf(" ");
       const coord1 = scot.coord.slice(0, spaceIndex);
       const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
-      console.log(scot.coord);
-      console.log(coord1);
-      console.log(coord2);
+      console.log(dob);
       return <Marker name={scot['name']}
-      dateOfBirth={scot['dateOfBirth']}
+      dateOfBirth={dob}
       position={{lat: coord2, lng: coord1}}
       imageURL = {scot['imageURL']}
       onClick={this.handleMarkerClick}
@@ -101,14 +100,13 @@ export class MapContainer extends Component {
   componentDidUpdate(prevProps){
     if (this.props !== prevProps) {
       const tempMarkers = this.props.scots.map((scot, index) => {
+        const dob = scot.dateOfBirth.slice(0,10);
         const spaceIndex = scot.coord.indexOf(" ");
         const coord1 = scot.coord.slice(0, spaceIndex);
         const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
-        console.log(scot.coord);
-        console.log(coord1);
-        console.log(coord2);
+        console.log(dob);
         return <Marker name={scot['name']}
-        dateOfBirth={scot['dateOfBirth']}
+        dateOfBirth={dob}
         position={{lat: coord2, lng: coord1}}
         imageURL = {scot['imageURL']}
         onClick={this.handleMarkerClick}
@@ -116,7 +114,6 @@ export class MapContainer extends Component {
        />
       })
       this.setState({markers: tempMarkers});
-      console.log("yaaaaaass");
     }
   }
 
@@ -138,7 +135,7 @@ export class MapContainer extends Component {
   }
 
   handleMapClick = (props) =>{
-    console.log("map cliked");
+    console.log("map clicked");
 
     if (this.state.showingInfoWindow) {
       this.setState({
@@ -149,7 +146,7 @@ export class MapContainer extends Component {
   }
 
   render() {
-  
+
     return (
       <Map google={this.props.google} zoom={7}
       initialCenter={{
@@ -165,9 +162,9 @@ export class MapContainer extends Component {
           marker={this.state.activeMarker}
           visible={this.state.showingInfoWindow}>
             <div>
-              <h1>{this.state.activeMarker.name}</h1>
-              <h1>{this.state.activeMarker.dateOfBirth}</h1>
-              <img src={this.state.activeMarker.imageURL} width="200px" />
+              <h2>{this.state.activeMarker.name}</h2>
+              <p>Born: {this.state.activeMarker.dateOfBirth}</p>
+              <img className="image" src={this.state.activeMarker.imageURL} />
             </div>
         </InfoWindow>
 
