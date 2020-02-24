@@ -20,11 +20,14 @@ const OccupationList = (props) => {
 
 
   return(
-
+    <div className="occupations-container">
+    <h1>Great Scots!</h1>
     <div className="occupations-list">
-
+      <ul className ="list">
       {occupations}
-
+      </ul>
+    </div>
+    <h2>Filters go here</h2>
     </div>
 
   )
