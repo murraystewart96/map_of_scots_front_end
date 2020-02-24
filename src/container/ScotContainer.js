@@ -15,6 +15,7 @@ class ScotContainer extends Component{
     }
 
     this.handleSelectOccupation = this.handleSelectOccupation.bind(this);
+    this.handleMarkerClick = this.handleMarkerClick.bind(this);
   }
 
 
@@ -26,6 +27,12 @@ class ScotContainer extends Component{
     .then(data => this.setState({scots: data}))
   }
 
+  handleMarkerClick(marker){
+    this.setState({showingInfoWindow: true,
+      activeMarker: marker
+    });
+  }
+
 
   componentDidMount(){
     const request = new Request();
@@ -35,10 +42,20 @@ class ScotContainer extends Component{
   }
 
   render(){
+
+    let activeContainer;
+
+    if(this.state.scots.length > 0 ){
+      activeContainer = <Fragment><MapContainer scots={this.state.scots}/>
+      <OccupationList occupations={this.state.occupations} handleSelectOccupation={this.handleSelectOccupation} /></Fragment>
+
+    }else{
+      activeContainer = <OccupationList occupations={this.state.occupations} handleSelectOccupation={this.handleSelectOccupation} />
+
+    }
     return(
       <Fragment>
-      <MapContainer scots={this.state.scots}/>
-      <OccupationList occupations={this.state.occupations} handleSelectOccupation={this.handleSelectOccupation} />
+      {activeContainer}
       </Fragment>
     )
   }

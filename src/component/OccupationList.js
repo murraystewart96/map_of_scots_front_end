@@ -8,6 +8,7 @@ const OccupationList = (props) => {
 
 
   const handleClick = (event) => {
+    console.log(event.target.value);
     const occupation = props.occupations[event.target.value];
     props.handleSelectOccupation(occupation)
 	}
