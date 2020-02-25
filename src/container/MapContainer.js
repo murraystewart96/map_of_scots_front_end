@@ -101,11 +101,13 @@ export class MapContainer extends Component {
     if (this.props !== prevProps) {
       const tempMarkers = this.props.scots.map((scot, index) => {
         const dob = scot.dateOfBirth.slice(0,10);
+        const dod = scot.dateOfDeath.slice(0,10);
         const spaceIndex = scot.coord.indexOf(" ");
         const coord1 = scot.coord.slice(0, spaceIndex);
         const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
         return <Marker name={scot['name']}
         dateOfBirth={dob}
+        dateOfDeath={dod}
         position={{lat: coord2, lng: coord1}}
         imageURL = {scot['imageURL']}
         onClick={this.handleMarkerClick}
@@ -171,6 +173,7 @@ export class MapContainer extends Component {
             <div>
               <h2>{this.state.activeMarker.name}</h2>
               <p>Born: {this.state.activeMarker.dateOfBirth}</p>
+              <p>Died: {this.state.activeMarker.dateOfDeath}</p>
               <img className="image" src={this.state.activeMarker.imageURL} />
             </div>
         </InfoWindow>
