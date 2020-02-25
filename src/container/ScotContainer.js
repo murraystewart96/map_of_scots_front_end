@@ -152,8 +152,31 @@ class ScotContainer extends Component{
 
   componentDidMount(){
     const request = new Request();
+
+
+
     request.get('/api/occupations')
-    .then(data => this.setState({occupations: data}));
+    .then((occupations) => {
+
+      let occupationObjects = []
+      request.get('/api/scots/occupations/counts')
+      .then((occupationCounts) => {
+        for(let i = 0; i < occupations.length; i++){
+          let occupationObject = {
+            name: occupations[i],
+            count: occupationCounts[i]
+          }
+          occupationObjects.push(occupationObject)
+        }
+        this.setState({occupations: occupationObjects})
+      })
+    })
+
+
+
+
+    request.get('/api/scots/occupations/counts')
+    .then(data => console.log(data))
 
     this.populateSearchBox();
 
