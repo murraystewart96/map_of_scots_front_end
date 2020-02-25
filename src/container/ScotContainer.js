@@ -13,14 +13,17 @@ class ScotContainer extends Component{
     this.state = {
       occupations: [],
       selectedOccupation: "",
-      selectedGender:"",
+      selectedGender: "",
+      selectedDOA: "",
       scots: [],
-      selectedScots: [],
+      allScotsInOccupation: [],
+      allScotsInDOA: [],
       markers: []
     }
 
     this.handleSelectOccupation = this.handleSelectOccupation.bind(this);
     this.handleGenderFilter = this.handleGenderFilter.bind(this);
+    this.handleDOAFilter = this.handleDOAFilter.bind(this);
   }
 
 
@@ -31,34 +34,38 @@ class ScotContainer extends Component{
     request.get('/api/scots/' + occupation)
     .then((data) => {
       this.setState({scots: data});
-      this.setState({selectedScots: this.state.scots})
+      this.setState({allScotsInOccupation: this.state.scots})
     })
 
   }
 
-
   handleGenderFilter(event){
-
     this.setState({selectedGender: event})
-    this.setState({scots: this.state.selectedScots}, () => {
+    if (event === 'all-gender'){
+      this.setState({scots: this.state.allScotsInOccupation})
+    } else {
+    this.setState({scots: this.state.allScotsInOccupation}, () => {
       let filteredScots = [];
-      
       for(let i = 0; i < this.state.scots.length; i++){
         if(this.state.scots[i].gender === event){
           filteredScots.push(this.state.scots[i])
         }
-
-    }  //reset list
+    }
     this.setState({scots: filteredScots})
-
+    this.setState({allScotsInGender: this.state.scots})
     })
+  }
   }
 
 
-  handleDeadOrAlive(event){
-    let filteredScots = [];
+  handleDOAFilter(event){
+    this.setState({selectedDOA: event})
+    if (event === 'all-DOA'){
+      this.setState({scots: this.state.allScotsInOccupation})
+    } else{
 
-    if(event.target.value === "dead"){
+    let filteredScots = [];
+    if(event === "dead"){
       for(let i = 0; i < this.state.scots.length; i++){
         if(this.state.scots[i].dateOfDeath !== ""){
           filteredScots.push(this.state.scots[i])
@@ -73,12 +80,10 @@ class ScotContainer extends Component{
     }
     this.setState({scots: filteredScots})
   }
-
-
+}
 
   componentDidMount(){
     const request = new Request();
-
     request.get('/api/occupations')
     .then(data => this.setState({occupations: data}));
   }
@@ -93,7 +98,10 @@ class ScotContainer extends Component{
       scots={this.state.scots}
       handleSelectOccupation={this.handleSelectOccupation}
       handleGenderFilter={this.handleGenderFilter}
-      selectedGender= {this.state.selectedGender} />
+      handleDOAFilter={this.handleDOAFilter}
+      selectedGender= {this.state.selectedGender}
+      selectedDOA={this.state.selectedDOA}
+       />
       </Fragment>
       </Fragment>
     )

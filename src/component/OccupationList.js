@@ -17,6 +17,11 @@ const OccupationList = (props) => {
     props.handleGenderFilter(selectedGender)
   }
 
+  const handleDOASubmit = (event) => {
+    const selectedDOA = event.target.value;
+    props.handleDOAFilter(selectedDOA)
+  }
+
 
   const occupations = props.occupations.map((occupation, index) => {
     return <li key={index} value={index} onClick={handleClick}>{occupation+"s"}</li>
@@ -35,6 +40,15 @@ console.log(props.selectedGender);
         <h2>Filters</h2>
         <div className="gender-filter">
           <form>
+          <input
+          type="radio"
+          id="all-gender"
+          name="gender"
+          value="all-gender"
+          checked={props.selectedGender === 'all-gender'}
+          onChange={handleGenderSubmit}
+          />
+          <label for="all-gender">All</label>
             <input
             type="radio"
             id="male"
@@ -52,6 +66,36 @@ console.log(props.selectedGender);
             checked={props.selectedGender === 'female'}
             onChange={handleGenderSubmit} />
             <label for="female">Female</label>
+          </form>
+        </div>
+        <div className="DOA-filter">
+          <form>
+          <input
+          type="radio"
+          id="all-DOA"
+          name="DOA"
+          value="all-DOA"
+          checked={props.selectedDOA === 'all-DOA'}
+          onChange={handleDOASubmit}
+          />
+          <label for="all-DOA">All</label>
+            <input
+            type="radio"
+            id="dead"
+            name="DOA"
+            value="dead"
+            checked={props.selectedDOA === 'dead'}
+            onChange={handleDOASubmit}
+            />
+            <label for="dead">Dead</label>
+            <input
+            type="radio"
+            id="alive"
+            name="DOA"
+            value="alive"
+            checked={props.selectedDOA === 'alive'}
+            onChange={handleDOASubmit} />
+            <label for="alive">Alive</label>
           </form>
         </div>
       </div>
