@@ -82,7 +82,6 @@ export class MapContainer extends Component {
       const spaceIndex = scot.coord.indexOf(" ");
       const coord1 = scot.coord.slice(0, spaceIndex);
       const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
-      console.log(dob);
       return <Marker name={scot['name']}
       dateOfBirth={dob}
       position={{lat: coord2, lng: coord1}}
@@ -105,7 +104,6 @@ export class MapContainer extends Component {
         const spaceIndex = scot.coord.indexOf(" ");
         const coord1 = scot.coord.slice(0, spaceIndex);
         const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
-        console.log(dob);
         return <Marker name={scot['name']}
         dateOfBirth={dob}
         position={{lat: coord2, lng: coord1}}

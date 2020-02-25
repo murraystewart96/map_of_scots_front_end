@@ -13,11 +13,14 @@ class ScotContainer extends Component{
     this.state = {
       occupations: [],
       selectedOccupation: "",
+      selectedGender:"",
       scots: [],
+      selectedScots: [],
       markers: []
     }
 
     this.handleSelectOccupation = this.handleSelectOccupation.bind(this);
+    this.handleGenderFilter = this.handleGenderFilter.bind(this);
   }
 
 
@@ -27,41 +30,48 @@ class ScotContainer extends Component{
 
     request.get('/api/scots/' + occupation)
     .then((data) => {
-      this.setState({scots: data})
+      this.setState({scots: data});
+      this.setState({selectedScots: this.state.scots})
+    })
+
+  }
+
+
+  handleGenderFilter(event){
+
+    this.setState({selectedGender: event})
+    this.setState({scots: this.state.selectedScots}, () => {
+      let filteredScots = [];
+      
+      for(let i = 0; i < this.state.scots.length; i++){
+        if(this.state.scots[i].gender === event){
+          filteredScots.push(this.state.scots[i])
+        }
+
+    }  //reset list
+    this.setState({scots: filteredScots})
+
     })
   }
 
 
-
-  handleGenderFilter(event){
-    let fileteredScots = [];
-    for(let i = 0; i < this.state.scots.length; i++){
-      if(this.state.scots[i].gender === event.target.value){
-        fileteredScots.push(this.state.scots[i])
-      }
-    }
-
-    this.setState({scots: fileteredScots})
-  }
-
-
   handleDeadOrAlive(event){
-    let fileteredScots = [];
+    let filteredScots = [];
 
     if(event.target.value === "dead"){
       for(let i = 0; i < this.state.scots.length; i++){
         if(this.state.scots[i].dateOfDeath !== ""){
-          fileteredScots.push(this.state.scots[i])
+          filteredScots.push(this.state.scots[i])
         }
       }
     }else{
       for(let i = 0; i < this.state.scots.length; i++){
         if(this.state.scots[i].dateOfDeath === ""){
-          fileteredScots.push(this.state.scots[i])
+          filteredScots.push(this.state.scots[i])
         }
       }
     }
-    this.setState({scots: fileteredScots})
+    this.setState({scots: filteredScots})
   }
 
 
@@ -78,7 +88,12 @@ class ScotContainer extends Component{
     return(
       <Fragment>
       <Fragment><MapContainer scots={this.state.scots}/>
-      <OccupationList occupations={this.state.occupations} handleSelectOccupation={this.handleSelectOccupation} />
+      <OccupationList
+      occupations={this.state.occupations}
+      scots={this.state.scots}
+      handleSelectOccupation={this.handleSelectOccupation}
+      handleGenderFilter={this.handleGenderFilter}
+      selectedGender= {this.state.selectedGender} />
       </Fragment>
       </Fragment>
     )

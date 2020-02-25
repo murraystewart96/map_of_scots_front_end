@@ -4,7 +4,12 @@
 
 h1 {
   margin:0;
-  padding:10px;
+  padding:10px 0;
+}
+
+h2 {
+  margin:0;
+  padding:10px 0;
 }
 
 .occupations-container {
@@ -19,9 +24,17 @@ h1 {
 
 .occupations-list {
   width:250px;
-  height:450px;
+  height:350px;
   overflow: scroll;
   overflow-x: hidden;
+}
+
+.filter-container {
+  padding:10px;
+}
+
+.gender-filter {
+  padding: 0 0 15px 0;
 }
 
 ul {
