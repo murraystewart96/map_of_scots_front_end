@@ -5,6 +5,7 @@ import OccupationList from '../component/OccupationList'
 import MapContainer from  './MapContainer'
 import {Marker} from 'google-maps-react';
 import ReactSearchBox from 'react-search-box'
+import FilterHelper from '../helpers/filterHelper'
 
 
 class ScotContainer extends Component{
@@ -13,19 +14,22 @@ class ScotContainer extends Component{
     this.state = {
       occupations: [],
       selectedOccupation: "",
-      selectedGender: "",
-      selectedDOA: "",
       scots: [],
+      selectedScot: {},
       allScotsInOccupation: [],
-      allScotsInDOA: [],
       nameObjects: [],
-      selectedScots: [],
-      markers: []
+      markers: [],
+      genderFilter: "all-gender",
+      doaFilter: "all-DOA"
+
     }
 
     this.handleSelectOccupation = this.handleSelectOccupation.bind(this);
     this.handleGenderFilter = this.handleGenderFilter.bind(this);
     this.handleDOAFilter = this.handleDOAFilter.bind(this);
+    this.filter = this.filter.bind(this);
+    this.handleSelectScot = this.handleSelectScot.bind(this);
+
   }
 
 
@@ -33,7 +37,7 @@ class ScotContainer extends Component{
     this.setState({selectedOccupation: occupation});
     const request = new Request();
 
-    request.get('/api/scots/' + occupation)
+    request.get('/api/scots/occupations/' + occupation)
     .then((data) => {
       this.setState({scots: data});
       this.setState({allScotsInOccupation: this.state.scots})
@@ -41,48 +45,41 @@ class ScotContainer extends Component{
 
   }
 
-  handleGenderFilter(event){
-    this.setState({selectedGender: event})
-    if (event === 'all-gender'){
-      this.setState({scots: this.state.allScotsInOccupation})
-    } else {
-    this.setState({scots: this.state.allScotsInOccupation}, () => {
-      let filteredScots = [];
-      for(let i = 0; i < this.state.scots.length; i++){
-        if(this.state.scots[i].gender === event){
-          filteredScots.push(this.state.scots[i])
-        }
+  handleSelectScot(scotID){
+    const request = new Request();
+
+    request.get('/api/scots/' + scotID.toString())
+    .then(scot => this.setState({scots: [scot]}))
+
+
+  }
+
+
+  filter(){
+
+    const filterHelper = new FilterHelper();
+
+    let filteredScots = this.state.allScotsInOccupation;
+
+    if(this.state.genderFilter !== "all-gender"){
+      filteredScots = filterHelper.filterByGender(this.state.genderFilter, filteredScots);
     }
-    this.setState({scots: filteredScots})
-    this.setState({allScotsInGender: this.state.scots})
-    })
-  }
-  }
 
-
-  handleDOAFilter(event){
-    this.setState({selectedDOA: event})
-    if (event === 'all-DOA'){
-      this.setState({scots: this.state.allScotsInOccupation})
-    } else{
-
-    let filteredScots = [];
-    if(event === "dead"){
-      for(let i = 0; i < this.state.scots.length; i++){
-        if(this.state.scots[i].dateOfDeath !== ""){
-          filteredScots.push(this.state.scots[i])
-        }
-      }
-    }else{
-      for(let i = 0; i < this.state.scots.length; i++){
-        if(this.state.scots[i].dateOfDeath === ""){
-          filteredScots.push(this.state.scots[i])
-        }
-      }
+    if(this.state.doaFilter !== "all-DOA"){
+      filteredScots = filterHelper.filterByDOA(this.state.doaFilter, filteredScots);
     }
-    this.setState({scots: filteredScots})
+
+    this.setState({scots: filteredScots});
   }
-}
+
+
+  handleGenderFilter(filter){
+    this.setState({genderFilter: filter}, this.filter)
+  }
+
+  handleDOAFilter(filter){
+    this.setState({doaFilter: filter}, this.filter)
+  }
 
   populateSearchBox(){
     const request = new Request();
@@ -97,7 +94,8 @@ class ScotContainer extends Component{
       for(let i = 0; i < scots.length; i++){
         let nameObj = {
           key: "",
-          value: ""
+          value: "",
+          id: ""
         }
 
         //set current key
@@ -107,6 +105,7 @@ class ScotContainer extends Component{
         if(currentKey !== previousKey){
           nameObj['key'] = currentKey;
           nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
+          nameObj['id'] = scots[i]['id'];
           nameObjectArray.push(nameObj)
           count = 1;      //reset duplicate count
       }else{
@@ -119,27 +118,24 @@ class ScotContainer extends Component{
              //add duplicate count number to currentKey
              currentKey = scots[i]['name'].toLowerCase() + count.toString();
 
-             let identicalKeyCount = 0;
-
              //Loop through however many of the previous entires had the same name
              //if none match current key break the loop
              for(let j = 1; j <= count; j++){
                previousKey = nameObjectArray[i-j]['key']
-               //
+
+               uniqueKeyFound = true;
+
                if(currentKey === previousKey){
-                 identicalKeyCount++;
+                 uniqueKeyFound = false
                }
              }
 
-             //break loop if the current key didnt match any of the previous entries
-             if(identicalKeyCount === 0){
-               uniqueKeyFound = true;
-             }
              //Increase count incase next entry has the same name
              count++;
            }
            nameObj['key'] = currentKey;
            nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
+           nameObj['id'] = scots[i]['id'];
            nameObjectArray.push(nameObj)
          }
 
@@ -174,17 +170,22 @@ class ScotContainer extends Component{
       //   data={this.state.nameObjects}
       //   callback={record => console.log(record)}
       // />
+      <Fragment>
+      <MapContainer scots={this.state.scots}/>
+
 
       <OccupationList
       nameObjects={this.state.nameObjects}
       occupations={this.state.occupations}
       scots={this.state.scots}
       handleSelectOccupation={this.handleSelectOccupation}
+      handleSelectScot={this.handleSelectScot}
       handleGenderFilter={this.handleGenderFilter}
       handleDOAFilter={this.handleDOAFilter}
-      selectedGender= {this.state.selectedGender}
-      selectedDOA={this.state.selectedDOA}
+      selectedGender= {this.state.genderFilter}
+      selectedDOA={this.state.doaFilter}
        />
+       </Fragment>
 
     )
   }
@@ -192,6 +193,6 @@ class ScotContainer extends Component{
 
 }
 
-  // <MapContainer scots={this.state.scots}/>
+  //<MapContainer scots={this.state.scots}/>
 
 export default ScotContainer;
