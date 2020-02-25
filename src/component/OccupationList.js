@@ -1,4 +1,5 @@
 import React, {Fragment} from 'react'
+import ReactSearchBox from 'react-search-box'
 
 const OccupationList = (props) => {
 
@@ -31,6 +32,14 @@ console.log(props.selectedGender);
   return(
     <div className="occupations-container">
       <h1>Great Scots!</h1>
+      <div className="search">
+      <ReactSearchBox
+        placeholder="Input search text"
+        value=""
+        data={props.nameObjects}
+        callback={record => console.log(record)}
+      />
+      </div>
       <div className="occupations-list">
         <ul className ="list">
           {occupations}

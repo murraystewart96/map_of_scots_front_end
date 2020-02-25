@@ -167,15 +167,16 @@ class ScotContainer extends Component{
 
     return(
 
-      <Fragment>
-      <ReactSearchBox
-        placeholder="Placeholder"
-        value=""
-        data={this.state.nameObjects}
-        callback={record => console.log(record)}
-      />
+
+      // <ReactSearchBox
+      //   placeholder="Placeholder"
+      //   value=""
+      //   data={this.state.nameObjects}
+      //   callback={record => console.log(record)}
+      // />
 
       <OccupationList
+      nameObjects={this.state.nameObjects}
       occupations={this.state.occupations}
       scots={this.state.scots}
       handleSelectOccupation={this.handleSelectOccupation}
@@ -184,7 +185,6 @@ class ScotContainer extends Component{
       selectedGender= {this.state.selectedGender}
       selectedDOA={this.state.selectedDOA}
        />
-      </Fragment>
 
     )
   }
