@@ -40,13 +40,14 @@ console.log(props.selectedGender);
         callback={record => console.log(record)}
       />
       </div>
+      <h3>Occupations</h3>
       <div className="occupations-list">
         <ul className ="list">
           {occupations}
         </ul>
       </div>
       <div className="filter-container">
-        <h2>Filters</h2>
+        <h3>Filters</h3>
         <div className="gender-filter">
           <form>
           <input
