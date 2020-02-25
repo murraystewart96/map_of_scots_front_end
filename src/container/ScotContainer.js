@@ -15,17 +15,20 @@ class ScotContainer extends Component{
       occupations: [],
       selectedOccupation: "",
       scots: [],
+      selectedScot: {},
       allScotsInOccupation: [],
       nameObjects: [],
       markers: [],
       genderFilter: "all-gender",
       doaFilter: "all-DOA"
+
     }
 
     this.handleSelectOccupation = this.handleSelectOccupation.bind(this);
     this.handleGenderFilter = this.handleGenderFilter.bind(this);
     this.handleDOAFilter = this.handleDOAFilter.bind(this);
     this.filter = this.filter.bind(this);
+    this.handleSelectScot = this.handleSelectScot.bind(this);
 
   }
 
@@ -34,11 +37,20 @@ class ScotContainer extends Component{
     this.setState({selectedOccupation: occupation});
     const request = new Request();
 
-    request.get('/api/scots/' + occupation)
+    request.get('/api/scots/occupations/' + occupation)
     .then((data) => {
       this.setState({scots: data});
       this.setState({allScotsInOccupation: this.state.scots})
     })
+
+  }
+
+  handleSelectScot(scotID){
+    const request = new Request();
+
+    request.get('/api/scots/' + scotID.toString())
+    .then(scot => this.setState({scots: [scot]}))
+
 
   }
 
@@ -82,7 +94,8 @@ class ScotContainer extends Component{
       for(let i = 0; i < scots.length; i++){
         let nameObj = {
           key: "",
-          value: ""
+          value: "",
+          id: ""
         }
 
         //set current key
@@ -92,6 +105,7 @@ class ScotContainer extends Component{
         if(currentKey !== previousKey){
           nameObj['key'] = currentKey;
           nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
+          nameObj['id'] = scots[i]['id'];
           nameObjectArray.push(nameObj)
           count = 1;      //reset duplicate count
       }else{
@@ -121,6 +135,7 @@ class ScotContainer extends Component{
            }
            nameObj['key'] = currentKey;
            nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
+           nameObj['id'] = scots[i]['id'];
            nameObjectArray.push(nameObj)
          }
 
@@ -155,7 +170,7 @@ class ScotContainer extends Component{
       //   data={this.state.nameObjects}
       //   callback={record => console.log(record)}
       // />
-
+      <Fragment>
       <MapContainer scots={this.state.scots}/>
 
 
@@ -164,11 +179,13 @@ class ScotContainer extends Component{
       occupations={this.state.occupations}
       scots={this.state.scots}
       handleSelectOccupation={this.handleSelectOccupation}
+      handleSelectScot={this.handleSelectScot}
       handleGenderFilter={this.handleGenderFilter}
       handleDOAFilter={this.handleDOAFilter}
       selectedGender= {this.state.genderFilter}
       selectedDOA={this.state.doaFilter}
        />
+       </Fragment>
 
     )
   }
