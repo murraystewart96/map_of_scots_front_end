@@ -13,6 +13,10 @@ const OccupationList = (props) => {
     props.handleSelectOccupation(occupation)
 	}
 
+  const handleSelectScot = (scot) => {
+    props.handleSelectScot(scot.id)
+  }
+
   const handleGenderSubmit = (event) => {
     const selectedGender = event.target.value;
     props.handleGenderFilter(selectedGender)
@@ -41,7 +45,8 @@ console.log(props.selectedGender);
         placeholder="Input search text"
         value=""
         data={props.nameObjects}
-        callback={record => console.log(record)}
+
+        onSelect= {handleSelectScot}
       />
       </div>
       <h3>Occupations</h3>
