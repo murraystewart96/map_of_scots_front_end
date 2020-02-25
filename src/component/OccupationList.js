@@ -48,66 +48,87 @@ console.log(props.selectedGender);
       </div>
       <div className="filter-container">
         <h3>Filters</h3>
-        <div className="gender-filter">
+          <div className="gender-filter">
           <form>
+
+          <label for="all-gender" className="radio">
           <input
           type="radio"
           id="all-gender"
           name="gender"
           value="all-gender"
+          className="hidden"
           checked={props.selectedGender === 'all-gender'}
           onChange={handleGenderSubmit}
           />
-          <label for="all-gender">All</label>
+          <span className="label"></span>All</label>
+
+          <label for="male" className="radio">
             <input
             type="radio"
             id="male"
             name="gender"
             value="male"
+            className="hidden"
             checked={props.selectedGender === 'male'}
             onChange={handleGenderSubmit}
             />
-            <label for="male">Male</label>
+            <span className="label"></span>Male</label>
+
+            <label for="female" className="radio">
             <input
             type="radio"
             id="female"
             name="gender"
             value="female"
+            className="hidden"
             checked={props.selectedGender === 'female'}
             onChange={handleGenderSubmit} />
-            <label for="female">Female</label>
+            <span className="label"></span>Female</label>
           </form>
-        </div>
-        <div className="DOA-filter">
+          </div>
+
+          <div className="DOA-filter">
           <form>
+
+          <label for="all-DOA" className="radio">
           <input
           type="radio"
           id="all-DOA"
           name="DOA"
           value="all-DOA"
+          className="hidden"
           checked={props.selectedDOA === 'all-DOA'}
           onChange={handleDOASubmit}
           />
-          <label for="all-DOA">All</label>
+          <span className="label"></span>All</label>
+
+          <label for="dead" className="radio">
             <input
             type="radio"
             id="dead"
             name="DOA"
             value="dead"
+            className="hidden"
             checked={props.selectedDOA === 'dead'}
             onChange={handleDOASubmit}
             />
-            <label for="dead">Dead</label>
+          <span className="label"></span>Dead</label>
+
+          <label for="alive" className="radio">
             <input
             type="radio"
             id="alive"
             name="DOA"
             value="alive"
+            className="hidden"
             checked={props.selectedDOA === 'alive'}
-            onChange={handleDOASubmit} />
-            <label for="alive">Alive</label>
+            onChange={handleDOASubmit}
+            />
+            <span className="label"></span>Alive</label>
+
           </form>
-        </div>
+          </div>
       </div>
     </div>
 
