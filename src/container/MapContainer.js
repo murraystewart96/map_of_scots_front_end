@@ -27,9 +27,6 @@ export class MapContainer extends Component {
 
   }
 
-
-
-
   componentDidMount(){
     console.log(this.props.scots);
     const tempMarkers = this.props.scots.map((scot, index) => {
@@ -73,13 +70,6 @@ export class MapContainer extends Component {
       this.setState({markers: tempMarkers});
     }
   }
-
-
-
-
-
-
-
 
 
   handleMarkerClick = (props, marker, e) => {
