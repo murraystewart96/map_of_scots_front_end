@@ -4,7 +4,7 @@ import Request from '../helpers/request';
 import OccupationList from '../component/OccupationList'
 import MapContainer from  './MapContainer'
 import {Marker} from 'google-maps-react';
-
+import ReactSearchBox from 'react-search-box'
 
 
 class ScotContainer extends Component{
@@ -15,6 +15,7 @@ class ScotContainer extends Component{
       selectedOccupation: "",
       selectedGender:"",
       scots: [],
+      nameObjects: [],
       selectedScots: [],
       markers: []
     }
@@ -42,7 +43,7 @@ class ScotContainer extends Component{
     this.setState({selectedGender: event})
     this.setState({scots: this.state.selectedScots}, () => {
       let filteredScots = [];
-      
+
       for(let i = 0; i < this.state.scots.length; i++){
         if(this.state.scots[i].gender === event){
           filteredScots.push(this.state.scots[i])
@@ -76,18 +77,98 @@ class ScotContainer extends Component{
 
 
 
+  populateSearchBox(){
+    const request = new Request();
+    request.get('/api/names')
+    .then((scots) => {
+
+
+      let nameObjectArray = []; //array for search box name items
+      let previousKey = "";     //storing previous key entry
+      let count = 1;            //count keeps track of the number of duplicated names in a sequence
+
+      for(let i = 0; i < scots.length; i++){
+        let nameObj = {
+          key: "",
+          value: ""
+        }
+
+        //set current key
+        let currentKey = scots[i]['name'].toLowerCase();
+
+        //if current key is unique assign name object values
+        if(currentKey !== previousKey){
+          nameObj['key'] = currentKey;
+          nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
+          nameObjectArray.push(nameObj)
+          count = 1;      //reset duplicate count
+      }else{
+
+           let uniqueKeyFound = false;
+
+           //while current key is not unique
+           while(uniqueKeyFound == false){
+
+             //add duplicate count number to currentKey
+             currentKey = scots[i]['name'].toLowerCase() + count.toString();
+
+             let identicalKeyCount = 0;
+
+             //Loop through however many of the previous entires had the same name
+             //if none match current key break the loop
+             for(let j = 1; j <= count; j++){
+               previousKey = nameObjectArray[i-j]['key']
+               //
+               if(currentKey === previousKey){
+                 identicalKeyCount++;
+               }
+             }
+
+             //break loop if the current key didnt match any of the previous entries
+             if(identicalKeyCount === 0){
+               uniqueKeyFound = true;
+             }
+             //Increase count incase next entry has the same name
+             count++;
+           }
+           nameObj['key'] = currentKey;
+           nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
+           nameObjectArray.push(nameObj)
+         }
+
+        //assign previous key for next entry comparison
+        previousKey = scots[i]['name'].toLowerCase();
+
+      }
+      this.setState({nameObjects: nameObjectArray})
+
+    })
+  }
+
+
+
   componentDidMount(){
     const request = new Request();
 
     request.get('/api/occupations')
     .then(data => this.setState({occupations: data}));
+
+    this.populateSearchBox();
+
   }
 
   render(){
 
     return(
+
       <Fragment>
-      <Fragment><MapContainer scots={this.state.scots}/>
+      <ReactSearchBox
+        placeholder="Placeholder"
+        value=""
+        data={this.state.nameObjects}
+        callback={record => console.log(record)}
+      />
+
       <OccupationList
       occupations={this.state.occupations}
       scots={this.state.scots}
@@ -95,24 +176,13 @@ class ScotContainer extends Component{
       handleGenderFilter={this.handleGenderFilter}
       selectedGender= {this.state.selectedGender} />
       </Fragment>
-      </Fragment>
+
     )
   }
 
 
 }
 
+  // <MapContainer scots={this.state.scots}/>
+
 export default ScotContainer;
-
-
-    //
-    // let activeContainer;
-    //
-    // if(this.state.scots.length > 0 ){
-    //   activeContainer = <Fragment><MapContainer scots={this.state.scots}/>
-    //   <OccupationList occupations={this.state.occupations} handleSelectOccupation={this.handleSelectOccupation} /></Fragment>
-    //
-    // }else{
-    //   activeContainer = <OccupationList occupations={this.state.occupations} handleSelectOccupation={this.handleSelectOccupation} />
-    //
-    // }
