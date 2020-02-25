@@ -22,6 +22,10 @@ const OccupationList = (props) => {
     props.handleDOAFilter(selectedDOA)
   }
 
+  const handleFilter = (event) => {
+    props.handleFilter(event.target.value)
+  }
+
 
   const occupations = props.occupations.map((occupation, index) => {
     return <li key={index} value={index} onClick={handleClick}>{occupation+"s"}</li>
