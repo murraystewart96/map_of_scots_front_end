@@ -153,8 +153,6 @@ class ScotContainer extends Component{
   componentDidMount(){
     const request = new Request();
 
-
-
     request.get('/api/occupations')
     .then((occupations) => {
 

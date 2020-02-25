@@ -9,6 +9,7 @@ const OccupationList = (props) => {
 
 
   const handleClick = (event) => {
+    console.log(event.target.className);
     const occupation = props.occupations[event.target.value];
     props.handleSelectOccupation(occupation.name)
 	}
@@ -33,7 +34,7 @@ const OccupationList = (props) => {
 
 
   const occupations = props.occupations.map((occupation, index) => {
-    return <li key={index} value={index} onClick={handleClick}>{occupation.name+"s" + occupation.count}</li>
+    return <li key={index} value={index} onClick={handleClick}>{occupation.name+"s" + ": " + occupation.count}</li>
   })
 
 console.log(props.selectedGender);

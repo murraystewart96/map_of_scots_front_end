@@ -1,57 +1,12 @@
 
 import React, {Component, useEffect} from 'react'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import Request from '../helpers/request'
 
+const wikiStartpoint = "en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
+const wikiEndpoint = "&format=jsonfm"
 
-
-// export const MapContainer = (props) => {
-//
-//
-//     if(props.scots.length === 0){
-//       return <p>LOADING...</p>
-//     }
-//
-//     const markerClick = (marker, e) => {
-//       props.onMarkerClick(marker);
-//     };
-//
-//     const markers = props.scots.map((scot, index) => {
-//       const spaceIndex = scot.coord.indexOf(" ");
-//       const coord1 = parseFloat(scot.coord.slice(0, spaceIndex));
-//       const coord2 = parseFloat(scot.coord.slice(spaceIndex + 1 , scot.coord.length));
-//       console.log(coord1);
-//       return(<Marker name={scot['name']}
-//       key={index}
-//       onClick={markerClick}
-//       position={{lat: coord2, lng: coord1}} />)
-//     })
-//
-//
-//   return (
-//     <Map google={props.google} zoom={7}
-//     initialCenter={{
-//           lat: 56.95,
-//           lng: -4.5
-//         }}
-//     >
-//       {markers}
-//
-//       <InfoWindow
-//             marker={props.activeMarker}
-//             visible={props.showingInfoWindow}
-//             >
-//               <div>
-//                 <h1>{props.activeMarker.name}</h1>
-//               </div>
-//           </InfoWindow>
-//
-//     </Map>)
-//
-//
-// }
-
-
-
+const wikiURL = "en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles="
 
 export class MapContainer extends Component {
 
@@ -110,6 +65,7 @@ export class MapContainer extends Component {
         dateOfDeath={dod}
         position={{lat: coord2, lng: coord1}}
         imageURL = {scot['imageURL']}
+        info = ""
         onClick={this.handleMarkerClick}
         key={index}
        />
@@ -139,6 +95,18 @@ export class MapContainer extends Component {
           lat: marker.position.lat()+1,
           lng: marker.position.lng()
         }
+    }, () => {
+
+      let proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      let url = wikiURL + this.state.activeMarker.name;
+
+      const request = new Request();
+      request.get(proxyUrl + url)
+      .then((data) => {
+        console.log(data.query.pages[Object.keys(data.query.pages)].extract);
+        this.state.activeMarker.info = data.query.pages[Object.keys(data.query.pages)].extract;
+        this.setState({activeMarker: this.state.activeMarker})
+      })
     });
   }
 
@@ -174,6 +142,7 @@ export class MapContainer extends Component {
               <h2>{this.state.activeMarker.name}</h2>
               <p>Born: {this.state.activeMarker.dateOfBirth}</p>
               <p>Died: {this.state.activeMarker.dateOfDeath}</p>
+              <p>Info: {this.state.activeMarker.info}</p>
               <img className="image" src={this.state.activeMarker.imageURL} />
             </div>
         </InfoWindow>
@@ -186,12 +155,3 @@ export class MapContainer extends Component {
 export default GoogleApiWrapper({
   apiKey: "AIzaSyDXhwisovJIARugrKYofsVy4-TeTFku_nU"
 })(MapContainer)
-
-// <InfoWindow
-//    marker={this.state.activeMarker}
-//    visible={this.state.showingInfoWindow}
-//    >
-//      <div>
-//        <h1>{this.state.activeMarker.name}</h1>
-//      </div>
-//  </InfoWindow>

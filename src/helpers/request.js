@@ -1,7 +1,12 @@
 class Request {
 
     get(url) {
-      return fetch(url)
+      return fetch(url, {
+        headers: {
+          "Origin": "X-Requested-With",
+          "Access-Control-Allow-Origin": "*"
+    }
+      })
       .then((res) => res.json());
     }
 
