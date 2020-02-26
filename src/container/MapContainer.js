@@ -4,11 +4,6 @@ import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import Request from '../helpers/request'
 
 // Import necessary components for React Google Maps
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-} from 'react-google-maps'
 
 const wikiStartpoint = "en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
 const wikiEndpoint = "&format=jsonfm"
