@@ -16,6 +16,7 @@ class FilterHelper {
 
     return fileteredScots;
   }
+  
 
   filterByDOA(doa, scots){
     let fileteredScots = [];

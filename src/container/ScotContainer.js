@@ -110,29 +110,13 @@ class ScotContainer extends Component{
           count = 1;      //reset duplicate count
       }else{
 
-           let uniqueKeyFound = false;
 
-           //while current key is not unique
-           while(uniqueKeyFound == false){
+          //add duplicate count number to currentKey
+          currentKey = scots[i]['name'].toLowerCase() + count.toString();
 
-             //add duplicate count number to currentKey
-             currentKey = scots[i]['name'].toLowerCase() + count.toString();
+          //Increase count incase next entry has the same name
+          count++;
 
-             //Loop through however many of the previous entires had the same name
-             //if none match current key break the loop
-             for(let j = 1; j <= count; j++){
-               previousKey = nameObjectArray[i-j]['key']
-
-               uniqueKeyFound = true;
-
-               if(currentKey === previousKey){
-                 uniqueKeyFound = false
-               }
-             }
-
-             //Increase count incase next entry has the same name
-             count++;
-           }
            nameObj['key'] = currentKey;
            nameObj['value'] = scots[i]['name'] + " : " + scots[i]['occupation'];
            nameObj['id'] = scots[i]['id'];

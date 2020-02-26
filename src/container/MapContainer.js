@@ -3,7 +3,6 @@ import React, {Component, useEffect} from 'react'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import Request from '../helpers/request'
 
-// Import necessary components for React Google Maps
 
 const wikiStartpoint = "en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
 const wikiEndpoint = "&format=jsonfm"
@@ -36,14 +35,19 @@ export class MapContainer extends Component {
     console.log(this.props.scots);
     const tempMarkers = this.props.scots.map((scot, index) => {
       const dob = scot.dateOfBirth.slice(0,10);
+      const dod = scot.dateOfDeath.slice(0,10);
+      const placeOfBirth = scot.placeOfBirth;
       const spaceIndex = scot.coord.indexOf(" ");
       const coord1 = scot.coord.slice(0, spaceIndex);
       const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
       return <Marker name={scot['name']}
       dateOfBirth={dob}
+      dateOfDeath={dod}
+      placeOfBirth={placeOfBirth}
       position={{lat: coord2, lng: coord1}}
       imageURL = {scot['imageURL']}
       onClick={this.handleMarkerClick}
+      info = ""
       key={index}
       icon={{
       url: "blue-dot.png",
@@ -59,6 +63,7 @@ export class MapContainer extends Component {
       const tempMarkers = this.props.scots.map((scot, index) => {
         const dob = scot.dateOfBirth.slice(0,10);
         const dod = scot.dateOfDeath.slice(0,10);
+        const placeOfBirth = scot.placeOfBirth;
         const spaceIndex = scot.coord.indexOf(" ");
         const coord1 = scot.coord.slice(0, spaceIndex);
         const coord2 = scot.coord.slice(spaceIndex + 1 , scot.coord.length-1);
@@ -66,6 +71,7 @@ export class MapContainer extends Component {
         dateOfBirth={dob}
         dateOfDeath={dod}
         position={{lat: coord2, lng: coord1}}
+        placeOfBirth={placeOfBirth}
         imageURL = {scot['imageURL']}
         info = ""
         onClick={this.handleMarkerClick}
@@ -244,6 +250,7 @@ export class MapContainer extends Component {
             <div>
               <h2>{this.state.activeMarker.name}</h2>
               <p>Born: {this.state.activeMarker.dateOfBirth}</p>
+              <p>Place: {this.state.activeMarker.placeOfBirth}</p>
               {dateOfDeath}
               {info}
               <img className="image" src={this.state.activeMarker.imageURL} />
