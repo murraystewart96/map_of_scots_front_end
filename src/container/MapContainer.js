@@ -3,10 +3,27 @@ import React, {Component, useEffect} from 'react'
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import Request from '../helpers/request'
 
+// Import necessary components for React Google Maps
+import {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+} from 'react-google-maps'
+
 const wikiStartpoint = "en.wikipedia.org/w/api.php?action=query&list=search&srsearch="
 const wikiEndpoint = "&format=jsonfm"
 
 const wikiURL = "en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles="
+//
+// {
+//   featureType: "water",
+//   elementType: "geometry",
+//   stylers:{
+//     color: "#3295af"
+//   }
+//
+// }
+
 
 export class MapContainer extends Component {
 
@@ -19,107 +36,8 @@ export class MapContainer extends Component {
       selectedPlace: {},
       markers: [],
       mapCenter: {},
-      mapStyle:
-        {
-          featureType: "water",
-        elementType: "geometry",
-        stylers:{
-            color: "#3295af"
-          }
-
-        }
-
-    }
-
-
-
-
-
-//     mapStyle: {
-//       featureType: "landscape.natural",
-//       elementType: "geometry.fill",
-//       stylers: {
-//               visibility: "on",
-//               color: "#e0efef",
-//             },
-//
-//       featureType: "poi",
-//       elementType: "geometry.fill",
-//       stylers: {
-//               visibility: "on",
-//               hue: "#1900ff",
-//               color: "#c0e8e8"
-//           }
-//
-//
-// ///////////
-//   {
-//       featureType: "road",
-//       elementType: "geometry",
-//       stylers:
-//           {
-//               "ightness: 100
-//           },
-//           {
-//               "visibility": "simplified"
-//           }
-//       ]
-//   },
-//   {
-//       featureType: "road",
-//       elementType: "labels",
-//       stylers:
-//           {
-//               visibility: "off"
-//           }
-//
-//   },
-//   {
-//       featureType: "transit.line",
-//       elementType: "geometry",
-//       stylers:
-//           {
-//               visibility: "on"
-//           },
-//           {
-//               lightness: 700
-//           }
-//
-//   },
-//   {
-//       featureType: "water",
-//       elementType: "all",
-//       stylers:
-//           {
-//               color: "#7dcdcd"
-//           }
-//
-//   },
-//   {
-//       featureType: "water",
-//       elementType: "geometry",
-//       stylers:
-//           {
-//               color: "#3295af"
-//           }
-//
-//   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+      styledMap: null,
+  }
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
@@ -145,7 +63,7 @@ export class MapContainer extends Component {
     })
 
 
-    this.setState({markers: tempMarkers});
+
 
   }
 
@@ -215,6 +133,93 @@ export class MapContainer extends Component {
   _mapLoaded(mapProps, map) {
      map.setOptions({
         styles: this.state.mapStyle
+     })
+
+     console.log(map);
+
+     let styledMapType = new this.props.google.maps.StyledMapType([
+       {
+           "featureType": "landscape.natural",
+           "elementType": "geometry.fill",
+           "stylers": [
+               {
+                   "visibility": "on"
+               },
+               {
+                   "color": "#e0efef"
+               }
+           ]
+       },
+       {
+           "featureType": "poi",
+           "elementType": "geometry.fill",
+           "stylers": [
+               {
+                   "visibility": "on"
+               },
+               {
+                   "hue": "#1900ff"
+               },
+               {
+                   "color": "#c0e8e8"
+               }
+           ]
+       },
+       {
+           "featureType": "road",
+           "elementType": "geometry",
+           "stylers": [
+               {
+                   "lightness": 100
+               },
+               {
+                   "visibility": "simplified"
+               }
+           ]
+       },
+       {
+           "featureType": "road",
+           "elementType": "labels",
+           "stylers": [
+               {
+                   "visibility": "off"
+               }
+           ]
+       },
+       {
+           "featureType": "transit.line",
+           "elementType": "geometry",
+           "stylers": [
+               {
+                   "visibility": "on"
+               },
+               {
+                   "lightness": 700
+               }
+           ]
+       },
+       {
+           "featureType": "water",
+           "elementType": "all",
+           "stylers": [
+               {
+                   "color": "#7dcdcd"
+               }
+           ]
+       },
+       {
+           "featureType": "water",
+           "elementType": "geometry",
+           "stylers": [
+               {
+                   "color": "#3295af"
+               }
+           ]
+       }],{name: 'Styled Map'});
+
+     this.setState({styledMap: styledMapType}, () => {
+       map.mapTypes.set('styled_map', this.state.styledMap)
+       map.setMapTypeId('styled_map');
      })
   }
 
