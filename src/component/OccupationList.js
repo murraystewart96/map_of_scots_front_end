@@ -40,7 +40,9 @@ const OccupationList = (props) => {
 console.log(props.selectedGender);
   return(
     <div className="occupations-container">
-      <h1>Great Scots!</h1>
+    <div class="logo">
+      <p>Great Scots!</p>
+      </div>
       <div className="search">
       <ReactSearchBox
         placeholder="Input search text"
