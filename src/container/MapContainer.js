@@ -87,7 +87,7 @@ export class MapContainer extends Component {
 
   handleMarkerClick = (props, marker, e) => {
 
-    console.log(marker.position.lat());
+    console.log("CLICKED");
 
     console.log("marker clicked");
     this.setState({
@@ -222,11 +222,11 @@ export class MapContainer extends Component {
     let dateOfDeath;
 
     if(this.state.activeMarker.dateOfDeath != ""){
-      info = <p>Died: {this.state.activeMarker.dateOfDeath}</p>
+      dateOfDeath = <p>Died: {this.state.activeMarker.dateOfDeath}</p>
     }
 
     if(this.state.activeMarker.info != ""){
-      dateOfDeath = <p>Info: {this.state.activeMarker.info}</p>
+      info = <div className='info-text'><p>Info: {this.state.activeMarker.info}</p></div>
     }
 
     return (
@@ -250,10 +250,11 @@ export class MapContainer extends Component {
             <div>
               <h2>{this.state.activeMarker.name}</h2>
               <p>Born: {this.state.activeMarker.dateOfBirth}</p>
-              <p>Place: {this.state.activeMarker.placeOfBirth}</p>
               {dateOfDeath}
-              {info}
+              <p>Place: {this.state.activeMarker.placeOfBirth}</p>
               <img className="image" src={this.state.activeMarker.imageURL} />
+              {info}
+
             </div>
         </InfoWindow>
 

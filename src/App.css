@@ -160,3 +160,7 @@ max-width: 275px !important;
 max-height: 350px !important;
 
 }
+
+.info-text {
+    width: 250px;
+}
