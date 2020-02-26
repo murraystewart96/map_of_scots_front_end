@@ -18,12 +18,113 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       selectedPlace: {},
       markers: [],
-      mapCenter: {}
+      mapCenter: {},
+      mapStyle:
+        {
+          featureType: "water",
+        elementType: "geometry",
+        stylers:{
+            color: "#3295af"
+          }
+
+        }
+
     }
+
+
+
+
+
+//     mapStyle: {
+//       featureType: "landscape.natural",
+//       elementType: "geometry.fill",
+//       stylers: {
+//               visibility: "on",
+//               color: "#e0efef",
+//             },
+//
+//       featureType: "poi",
+//       elementType: "geometry.fill",
+//       stylers: {
+//               visibility: "on",
+//               hue: "#1900ff",
+//               color: "#c0e8e8"
+//           }
+//
+//
+// ///////////
+//   {
+//       featureType: "road",
+//       elementType: "geometry",
+//       stylers:
+//           {
+//               "ightness: 100
+//           },
+//           {
+//               "visibility": "simplified"
+//           }
+//       ]
+//   },
+//   {
+//       featureType: "road",
+//       elementType: "labels",
+//       stylers:
+//           {
+//               visibility: "off"
+//           }
+//
+//   },
+//   {
+//       featureType: "transit.line",
+//       elementType: "geometry",
+//       stylers:
+//           {
+//               visibility: "on"
+//           },
+//           {
+//               lightness: 700
+//           }
+//
+//   },
+//   {
+//       featureType: "water",
+//       elementType: "all",
+//       stylers:
+//           {
+//               color: "#7dcdcd"
+//           }
+//
+//   },
+//   {
+//       featureType: "water",
+//       elementType: "geometry",
+//       stylers:
+//           {
+//               color: "#3295af"
+//           }
+//
+//   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
     this.handleMapClick = this.handleMapClick.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    this._mapLoaded = this._mapLoaded.bind(this);
 
   }
 
@@ -111,6 +212,13 @@ export class MapContainer extends Component {
     }
   }
 
+  _mapLoaded(mapProps, map) {
+     map.setOptions({
+        styles: this.state.mapStyle
+     })
+  }
+
+
   render() {
 
     return (
@@ -121,6 +229,9 @@ export class MapContainer extends Component {
           }}
           onClick = {this.handleMapClick}
           center = {this.state.mapCenter}
+          style = {this.state.mapStyle}
+          onReady={this._mapLoaded}
+
       >
 
         {this.state.markers}
