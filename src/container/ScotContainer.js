@@ -184,13 +184,6 @@ class ScotContainer extends Component{
 
     return(
 
-
-      // <ReactSearchBox
-      //   placeholder="Placeholder"
-      //   value=""
-      //   data={this.state.nameObjects}
-      //   callback={record => console.log(record)}
-      // />
       <Fragment>
       <MapContainer scots={this.state.scots}/>
 

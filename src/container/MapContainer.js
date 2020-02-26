@@ -9,15 +9,6 @@ const wikiStartpoint = "en.wikipedia.org/w/api.php?action=query&list=search&srse
 const wikiEndpoint = "&format=jsonfm"
 
 const wikiURL = "en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles="
-//
-// {
-//   featureType: "water",
-//   elementType: "geometry",
-//   stylers:{
-//     color: "#3295af"
-//   }
-//
-// }
 
 
 export class MapContainer extends Component {
@@ -59,9 +50,6 @@ export class MapContainer extends Component {
     }}
      />
     })
-
-
-
 
   }
 
@@ -135,8 +123,6 @@ export class MapContainer extends Component {
      map.setOptions({
         styles: this.state.mapStyle
      })
-
-     console.log(map);
 
      let styledMapType = new this.props.google.maps.StyledMapType([
        {
@@ -227,6 +213,17 @@ export class MapContainer extends Component {
 
   render() {
 
+    let info;
+    let dateOfDeath;
+
+    if(this.state.activeMarker.dateOfDeath != ""){
+      info = <p>Died: {this.state.activeMarker.dateOfDeath}</p>
+    }
+
+    if(this.state.activeMarker.info != ""){
+      dateOfDeath = <p>Info: {this.state.activeMarker.info}</p>
+    }
+
     return (
       <Map google={this.props.google} zoom={7}
       initialCenter={{
@@ -248,8 +245,8 @@ export class MapContainer extends Component {
             <div>
               <h2>{this.state.activeMarker.name}</h2>
               <p>Born: {this.state.activeMarker.dateOfBirth}</p>
-              <p>Died: {this.state.activeMarker.dateOfDeath}</p>
-              <p>Info: {this.state.activeMarker.info}</p>
+              {dateOfDeath}
+              {info}
               <img className="image" src={this.state.activeMarker.imageURL} />
             </div>
         </InfoWindow>
