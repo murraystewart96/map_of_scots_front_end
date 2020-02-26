@@ -91,7 +91,6 @@ export class MapContainer extends Component {
     }
   }
 
-
   handleMarkerClick = (props, marker, e) => {
 
     console.log(marker.position.lat());
