@@ -1,35 +1,54 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans|Baloo+Bhai|Galada|Pattaya|Patua+One|Share:700i|Shrikhand);
+
 .App {
   text-align: center;
+}
+
+.logo {
+margin: 0 0 -10px 0;
+padding: 0;
+font-family: "Galada";
+font-size: 48px;
+color: #2265ff;
+}
+
+
+logo p {
+  margin:0;
+  padding:0
 }
 
 h1 {
   margin:0;
   padding:10px 0 5px 0;
+
 }
 
 h2 {
   margin:0;
   padding:10px 0 5px 0;
+  color: #2265ff;
 }
 
 h3 {
   margin:0;
   padding:10px 0 5px 0;
+  color: #2265ff;
 }
 
 .occupations-container {
   position: absolute;
-    top: 55px;
+    top: 95px;
     left: 10px;
     padding: 0 0 5px 10px;;
     width: 250px;
-    background-color: #d4e8297a;
+    background-color: #3fb3d67a;
     border-radius:15px;
 }
 
 .occupations-list {
   width:240px;
-  height:350px;
+  height:300px;
   overflow: scroll;
   overflow-x: hidden;
 }
@@ -124,4 +143,11 @@ input[type="radio"]:checked + .label:after {
 
 label {
   display: inline-block;
+}
+
+.gm-style .gm-style-iw-c {
+
+max-width: 275px !important;
+max-height: 350px !important;
+
 }

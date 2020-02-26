@@ -141,6 +141,9 @@ export class MapContainer extends Component {
       imageURL = {scot['imageURL']}
       onClick={this.handleMarkerClick}
       key={index}
+      icon={{
+      url: "blue-dot.png",
+    }}
      />
     })
 
@@ -166,6 +169,9 @@ export class MapContainer extends Component {
         info = ""
         onClick={this.handleMarkerClick}
         key={index}
+        icon={{
+      url: "blue-dot.png",
+    }}
        />
       })
       this.setState({markers: tempMarkers});
